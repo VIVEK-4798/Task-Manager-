@@ -10,13 +10,18 @@ const authMiddleware = require('./middleware/auth');
 
 // middleware
 
-app.use(express.static('./public'));
 app.use(express.json());
 
 // routes
 
 app.use('/api/auth', authRoutes);
 app.use('/api/v1/tasks', authMiddleware, tasks);
+
+// Static files and root redirect
+app.use(express.static('./public'));
+app.get('/', (req, res) => {
+  res.redirect('/login.html');
+});
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);
