@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Task | TaskFlow</title>
+  <link rel="stylesheet" href="./main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <i class="fas fa-tasks"></i>
+        TaskFlow
+      </a>
+      <div class="nav-right">
+        <span class="nav-user" id="nav-user"></span>
+        <button class="btn btn-logout" id="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="edit-task-container">
+    <div class="edit-task-card fade-in">
+      <form class="edit-task-form" id="edit-task-form">
+        <h4 class="text-center">Edit Task</h4>
+        
+        <div class="form-group">
+          <label class="form-label">Task ID</label>
+          <p class="task-id text-muted text-small"></p>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="task-name">Task Title</label>
+          <input type="text" id="task-name" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="task-description">Description</label>
+          <textarea id="task-description" class="form-control" rows="4"></textarea>
+        </div>
+        
+        <div class="filter-row">
+          <div class="filter-group">
+            <label class="form-label" for="task-status">Status</label>
+            <select id="task-status" class="form-control">
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label class="form-label" for="task-due-date">Due Date</label>
+            <input type="date" id="task-due-date" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" id="task-completed" class="form-check-input">
+            <span>Mark as completed</span>
+          </label>
+        </div>
+        
+        <div class="flex gap-3">
+          <button type="submit" class="btn btn-primary flex-1">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+          <a href="index.html" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Cancel
+          </a>
+        </div>
+        
+        <div class="form-alert" id="form-alert"></div>
+      </form>
+    </div>
+    
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Back to Tasks
+    </a>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+  <script src="./edit-task.js"></script>
+</body>
+</html>
