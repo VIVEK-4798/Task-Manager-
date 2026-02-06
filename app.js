@@ -64,4 +64,3 @@ if (require.main === module) {
   };
   start();
 }
-}
