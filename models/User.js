@@ -44,9 +44,13 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
 
 // Generate JWT
 UserSchema.methods.createJWT = function () {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error('JWT_SECRET is not defined in environment variables');
+  }
   return jwt.sign(
     { userId: this._id, name: this.name },
-    process.env.JWT_SECRET,
+    secret,
     { expiresIn: process.env.JWT_LIFETIME || '30d' }
   )
 }

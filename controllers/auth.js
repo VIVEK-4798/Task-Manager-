@@ -5,6 +5,8 @@ const { createCustomError } = require('../errors/custom-error')
 const register = asyncWrapper(async (req, res) => {
   const { name, email, password } = req.body
 
+  console.log('Register attempt:', { name, email, hasPassword: !!password });
+
   if (!name || !email || !password) {
     return res
       .status(400)
@@ -19,6 +21,8 @@ const register = asyncWrapper(async (req, res) => {
 
   const user = await User.create({ name, email, password })
   const token = user.createJWT()
+
+  console.log('User registered successfully:', user.email);
 
   res.status(201).json({
     user: { name: user.name, email: user.email },

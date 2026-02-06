@@ -12,15 +12,24 @@ const authMiddleware = require('./middleware/auth');
 
 app.use(express.json());
 
-// Database connection middleware for serverless
-app.use(async (req, res, next) => {
-  try {
-    await connectDB(process.env.MONGO_URI);
-    next();
-  } catch (error) {
-    console.error('DB connection failed:', error);
-    res.status(500).json({ msg: 'Database connection failed' });
-  }
+// Initialize database connection on startup
+if (process.env.MONGO_URI) {
+  connectDB(process.env.MONGO_URI).catch(err => {
+    console.error('Initial DB connection failed:', err);
+  });
+} else {
+  console.error('MONGO_URI not found in environment variables');
+}
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    mongoUri: process.env.MONGO_URI ? 'configured' : 'missing',
+    jwtSecret: process.env.JWT_SECRET ? 'configured' : 'missing',
+    jwtLifetime: process.env.JWT_LIFETIME || 'using default',
+    nodeEnv: process.env.NODE_ENV || 'not set'
+  });
 });
 
 // routes
