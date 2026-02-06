@@ -12,6 +12,17 @@ const authMiddleware = require('./middleware/auth');
 
 app.use(express.json());
 
+// Database connection middleware for serverless
+app.use(async (req, res, next) => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    next();
+  } catch (error) {
+    console.error('DB connection failed:', error);
+    res.status(500).json({ msg: 'Database connection failed' });
+  }
+});
+
 // routes
 
 app.use('/api/auth', authRoutes);
@@ -26,16 +37,22 @@ app.get('/', (req, res) => {
 app.use(notFound);
 app.use(errorHandlerMiddleware);
 
-// Connect to database
-connectDB(process.env.MONGO_URI);
-
 // Export for Vercel serverless
 module.exports = app;
 
 // Local development server
 if (require.main === module) {
   const port = process.env.PORT || 5000;
-  app.listen(port, () =>
-    console.log(`Server is listening on port ${port}...`)
-  );
+  const start = async () => {
+    try {
+      await connectDB(process.env.MONGO_URI);
+      app.listen(port, () =>
+        console.log(`Server is listening on port ${port}...`)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  start();
+}
 }
